@@ -3,14 +3,7 @@ module Main exposing (view)
 import Browser
 import Header exposing (view)
 import Html exposing (button, div, text)
-import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
-
-
-
--- import Sidebar exposing (..)
--- import Post exposing (..)
--- import Footer exposing (..)
 
 
 main : Program () Int Msg
@@ -35,8 +28,7 @@ update msg model =
 
 view : Int -> Html.Html Msg
 view model =
-    Header.view
-        div
+    div
         []
         [ button [ onClick Decrement ] [ text "-" ]
         , div [] [ text (String.fromInt model) ]

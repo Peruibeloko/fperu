@@ -1,8 +1,8 @@
 module Header exposing (view)
 
 import Browser
-import Html exposing (button, h1, h2, header, text)
-import Html.Attributes exposing (id)
+import Html exposing (a, button, h1, h2, header, text)
+import Html.Attributes exposing (id, title)
 import Html.Events exposing (onClick)
 
 
@@ -11,18 +11,13 @@ main =
 
 
 type alias Model =
-    { headerText : String
-    , hambOpen : Bool
-    , subtitle : String
+    { hambOpen : Bool
     }
 
 
 init : Model
 init =
-    { headerText = "Big Ass Header"
-    , subtitle = """Não tenho muita certeza
-    sobre o que é tudo isso aqui"""
-    , hambOpen = False
+    { hambOpen = False
     }
 
 
@@ -38,9 +33,14 @@ update msg model =
 
 
 view : Model -> Html.Html Msg
-view model =
+view _ =
     header []
-        [ h1 [] [ text model.headerText ]
-        , h2 [] [ text model.subtitle ]
+        [ h1 []
+            [ a
+                [ title "ibe" ]
+                [ text "Peru" ]
+            ]
+        , h2 [] [ text """Não tenho muita certeza
+    sobre o que é tudo isso aqui""" ]
         , button [ id "hamb", onClick ToggleSidebar ] [ text "≡" ]
         ]
