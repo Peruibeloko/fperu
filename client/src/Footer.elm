@@ -1,1 +1,0 @@
-module Footer exposing (..)

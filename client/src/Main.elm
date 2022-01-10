@@ -1,36 +1,65 @@
-module Main exposing (view)
+module Main exposing (..)
 
 import Browser
-import Header exposing (view)
-import Html exposing (button, div, text)
+import Html exposing (a, aside, button, div, h1, h2, header, li, span, text, ul)
+import Html.Attributes exposing (class, href, id, target, title)
 import Html.Events exposing (onClick)
 
 
-main : Program () Int Msg
 main =
-    Browser.sandbox { init = 0, update = update, view = view }
+    Browser.sandbox { init = init, update = update, view = view }
+
+
+type alias Model =
+    { hambOpen : Bool
+    }
+
+
+init : Model
+init =
+    { hambOpen = False
+    }
 
 
 type Msg
-    = Increment
-    | Decrement
+    = ToggleSidebar
 
 
-update : Msg -> number -> number
+update : Msg -> Model -> Model
 update msg model =
     case msg of
-        Increment ->
-            model + 1
-
-        Decrement ->
-            model - 1
+        ToggleSidebar ->
+            { model | hambOpen = not model.hambOpen }
 
 
-view : Int -> Html.Html Msg
+view : Model -> Html.Html Msg
 view model =
-    div
-        []
-        [ button [ onClick Decrement ] [ text "-" ]
-        , div [] [ text (String.fromInt model) ]
-        , button [ onClick Increment ] [ text "+" ]
+    div [ class "grid-container" ]
+        [ span [ id "backdrop" ] []
+        , header []
+            [ h1 []
+                [ a [ title "ibe", href "/" ]
+                    [ text "Peru" ]
+                ]
+            , h2 []
+                [ text "Não tenho muita certeza\nsobre o que é tudo isso aqui" ]
+            , button [ id "hamb", onClick ToggleSidebar ]
+                [ text "≡" ]
+            ]
+        , aside [ id "socials" ]
+            [ h1 [] [ text "Redes" ]
+            , span [ id "close" ] [ text "←" ]
+            , ul []
+                [ a [ href "https://soundcloud.com/dynmic", target "_blank" ]
+                    [ li [ id "soundcloud" ] [ text "Soundcloud" ] ]
+                , a [ href "https://www.instagram.com/dyn.mic", target "_blank" ]
+                    [ li [ id "instagram" ] [ text "Instagram" ] ]
+                , a [ href "https://www.fb.com/dyn.mic.dnb", target "_blank" ]
+                    [ li [ id "facebook" ] [ text "Facebook" ] ]
+                , a [ href "https://www.twitch.tv/dynmicdnb", target "_blank" ]
+                    [ li [ id "twitch" ] [ text "Twitch" ] ]
+                , a [ href "https://twitter.com/dynmicdnb", target "_blank" ]
+                    [ li [ id "twitter" ] [ text "Twitter" ] ]
+                ]
+            ]
         ]
