@@ -1,11 +1,19 @@
-module Main exposing (..)
+module Main exposing (view)
 
 import Browser
+import Header exposing (view)
 import Html exposing (button, div, text)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 
 
+
+-- import Sidebar exposing (..)
+-- import Post exposing (..)
+-- import Footer exposing (..)
+
+
+main : Program () Int Msg
 main =
     Browser.sandbox { init = 0, update = update, view = view }
 
@@ -15,6 +23,7 @@ type Msg
     | Decrement
 
 
+update : Msg -> number -> number
 update msg model =
     case msg of
         Increment ->
@@ -24,8 +33,11 @@ update msg model =
             model - 1
 
 
+view : Int -> Html.Html Msg
 view model =
-    div [ class "test" ]
+    Header.view
+        div
+        []
         [ button [ onClick Decrement ] [ text "-" ]
         , div [] [ text (String.fromInt model) ]
         , button [ onClick Increment ] [ text "+" ]
