@@ -4,6 +4,8 @@ import Browser
 import Html exposing (a, aside, button, div, h1, h2, header, li, span, text, ul)
 import Html.Attributes exposing (class, href, id, target, title)
 import Html.Events exposing (onClick)
+import Html.Styled.Attributes exposing (css)
+import Styles exposing (gridContainer)
 
 
 main =
@@ -34,7 +36,7 @@ update msg model =
 
 view : Model -> Html.Html Msg
 view model =
-    div [ class "grid-container" ]
+    div []
         [ span [ id "backdrop" ] []
         , header []
             [ h1 []
