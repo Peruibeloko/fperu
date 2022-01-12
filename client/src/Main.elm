@@ -1,42 +1,45 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (a, aside, button, div, h1, h2, header, li, span, text, ul)
-import Html.Attributes exposing (class, href, id, target, title)
-import Html.Events exposing (onClick)
-import Html.Styled.Attributes exposing (css)
-import Styles exposing (gridContainer)
+import Html.Styled exposing (..)
+import Html.Styled.Attributes exposing (..)
+import Html.Styled.Events exposing (onClick)
+import Styles exposing (..)
 
 
 main =
-    Browser.sandbox { init = init, update = update, view = view }
+    Browser.sandbox { init = init, update = update, view = view >> toUnstyled }
 
 
 type alias Model =
-    { hambOpen : Bool
+    { isSidebarOpen : Bool
     }
 
 
 init : Model
 init =
-    { hambOpen = False
+    { isSidebarOpen = False
     }
 
 
 type Msg
-    = ToggleSidebar
+    = CloseSidebar
+    | OpenSidebar
 
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        ToggleSidebar ->
-            { model | hambOpen = not model.hambOpen }
+        CloseSidebar ->
+            { model | isSidebarOpen = False }
+
+        OpenSidebar ->
+            { model | isSidebarOpen = True }
 
 
-view : Model -> Html.Html Msg
+view : Model -> Html Msg
 view model =
-    div []
+    div [ css gridContainer ]
         [ span [ id "backdrop" ] []
         , header []
             [ h1 []
@@ -45,12 +48,12 @@ view model =
                 ]
             , h2 []
                 [ text "Não tenho muita certeza\nsobre o que é tudo isso aqui" ]
-            , button [ id "hamb", onClick ToggleSidebar ]
+            , button [ id "hamb", onClick OpenSidebar ]
                 [ text "≡" ]
             ]
-        , aside [ id "socials" ]
+        , aside [ id "socials", css [ sidebarState model.isSidebarOpen ] ]
             [ h1 [] [ text "Redes" ]
-            , span [ id "close" ] [ text "←" ]
+            , span [ id "close", onClick CloseSidebar ] [ text "→" ]
             , ul []
                 [ a [ href "https://soundcloud.com/dynmic", target "_blank" ]
                     [ li [ id "soundcloud" ] [ text "Soundcloud" ] ]
