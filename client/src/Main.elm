@@ -1,6 +1,7 @@
 module Main exposing (..)
 
 import Browser
+import Css exposing (property)
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
 import Html.Styled.Events exposing (onClick)
@@ -40,8 +41,9 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div [ css gridContainer ]
-        [ span [ id "backdrop" ] []
-        , header []
+        [ globalStyles
+        , span [ id "backdrop", css [ sidebarState model.isSidebarOpen ] ] []
+        , header [ css [ Css.property "grid-area" "header" ] ]
             [ h1 []
                 [ a [ title "ibe", href "/" ]
                     [ text "Peru" ]
