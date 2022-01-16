@@ -1,7 +1,6 @@
 module Main exposing (..)
 
 import Browser
-import Css exposing (property)
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
 import Html.Styled.Events exposing (onClick)
@@ -39,28 +38,8 @@ update msg model =
             { model | isSidebarOpen = True }
 
 
-sidebar : Model -> Html Msg
-sidebar model =
-    aside [ id "socials", css [ isBackdropVisible model.isSidebarOpen ] ]
-        [ h1 [] [ text "Redes" ]
-        , span [ id "close", onClick CloseSidebar ] [ text "→" ]
-        , ul []
-            [ a [ href "https://soundcloud.com/dynmic", target "_blank" ]
-                [ li [ id "soundcloud" ] [ text "Soundcloud" ] ]
-            , a [ href "https://www.instagram.com/dyn.mic", target "_blank" ]
-                [ li [ id "instagram" ] [ text "Instagram" ] ]
-            , a [ href "https://www.fb.com/dyn.mic.dnb", target "_blank" ]
-                [ li [ id "facebook" ] [ text "Facebook" ] ]
-            , a [ href "https://www.twitch.tv/dynmicdnb", target "_blank" ]
-                [ li [ id "twitch" ] [ text "Twitch" ] ]
-            , a [ href "https://twitter.com/dynmicdnb", target "_blank" ]
-                [ li [ id "twitter" ] [ text "Twitter" ] ]
-            ]
-        ]
-
-
-customHeader : Html Msg
-customHeader =
+customHeader : Model -> Html Msg
+customHeader model =
     header [ css headerStyles ]
         [ h1 [ css headerTitle1 ]
             [ a [ title "ibe", href "/" ]
@@ -68,7 +47,7 @@ customHeader =
             ]
         , h2 [ css headerTitle2 ]
             [ text "Não tenho muita certeza\nsobre o que é tudo isso aqui" ]
-        , button [ onClick OpenSidebar, css hambButton ]
+        , button [ onClick OpenSidebar, css (isBackdropVisible model.isSidebarOpen) ]
             [ text "≡" ]
         ]
 
@@ -78,13 +57,64 @@ fontUrl =
     "https://fonts.googleapis.com/css2?family=Fira+Sans:wght@500&family=Noto+Serif&family=PT+Sans:ital@0;1&display=swap"
 
 
+sidebar : Model -> Html Msg
+sidebar model =
+    aside [ id "socials", css socials ]
+        [ h1 [ css socialsTitle ] [ text "Redes" ]
+        , span [ id "close", onClick CloseSidebar, css (isBackdropVisible model.isSidebarOpen) ] [ text "→" ]
+        , ul [ css socialsList ]
+            [ a [ href "https://soundcloud.com/dynmic", target "_blank", css socialsLinks ]
+                [ li [ id "soundcloud", css (socialsListItems Soundcloud) ] [ text "SoundCloud" ] ]
+            , a [ href "https://www.instagram.com/dyn.mic", target "_blank", css socialsLinks ]
+                [ li [ id "instagram", css (socialsListItems Instagram) ] [ text "Instagram" ] ]
+            , a [ href "https://www.fb.com/dyn.mic.dnb", target "_blank", css socialsLinks ]
+                [ li [ id "facebook", css (socialsListItems Facebook) ] [ text "Facebook" ] ]
+            , a [ href "https://www.twitch.tv/dynmicdnb", target "_blank", css socialsLinks ]
+                [ li [ id "twitch", css (socialsListItems Twitch) ] [ text "Twitch" ] ]
+            , a [ href "https://twitter.com/dynmicdnb", target "_blank", css socialsLinks ]
+                [ li [ id "twitter", css (socialsListItems Twitter) ] [ text "Twitter" ] ]
+            ]
+        ]
+
+
+post : Model -> Html Msg
+post model =
+    article [ css postStyles ]
+        [ h1 [ css postTitle ]
+            [ text "title" ]
+        , header [ css postInfo ]
+            [ small [ css postSmall ]
+                [ text "author" ]
+            , small [ css postSmall ]
+                [ text "date" ]
+            ]
+        , p [ css postContent ]
+            [ text "post" ]
+        ]
+
+
+navbar : Model -> Html Msg
+navbar model =
+    nav [ css navbarStyles ]
+        [ ul [ css navbarList ]
+            [ li [] [ button [ css navbarButton ] [ text "⇇" ] ]
+            , li [] [ button [ css navbarButton ] [ text "←" ] ]
+            , li [] [ button [ css navbarButton ] [ text "⤨" ] ]
+            , li [] [ button [ css navbarButton ] [ text "→" ] ]
+            , li [] [ button [ css navbarButton ] [ text "⇉" ] ]
+            ]
+        ]
+
+
 view : Model -> Html Msg
 view model =
     node "main"
         [ css gridContainer ]
         [ globalStyles
         , node "link" [ href fontUrl, rel "stylesheet" ] []
-        , span [ id "backdrop", css [ isBackdropVisible model.isSidebarOpen ] ] []
-        , customHeader
+        , span [ id "backdrop", css (isBackdropVisible model.isSidebarOpen) ] []
+        , customHeader model
         , sidebar model
+        , post model
+        , navbar model
         ]
